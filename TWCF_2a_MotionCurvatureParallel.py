@@ -70,7 +70,7 @@ spot_righ_size = eval(bs_param[3])
 print("angles and radians", spot_righ)
 
 ## Window & elements
-win = visual.Window([1720,1100],allowGUI=True, monitor='testMonitor', units='deg',  fullscr = False, color=col_back, screen=1)
+win = visual.Window([1720,1100],allowGUI=True, monitor='testMonitor', units='deg',  fullscr = True, color=col_back, screen=1)
 win.mouseVisible = False
 fixation = visual.ShapeStim(win, vertices = ((0, -2), (0, 2), (0,0), (-2, 0), (2, 0)), lineWidth = 4, units = 'pix', size = (10, 10), closeShape = False, lineColor = col_both)
 xfix = visual.ShapeStim(win, vertices = ((-2, -2), (2, 2), (0,0), (-2, 2), (2, -2)), lineWidth = 4, units = 'pix', size = (10, 10), closeShape = False, lineColor = col_both)
@@ -117,6 +117,7 @@ if hem == 'RH':
     pol2cart(spot_righ[0] -angpad, spot_righ[1]- spot_righ_size[0]-side)],
     }
     poss = list(positions.items()) #list of positions used in experiment
+    print(poss)
     #to make top stimuli parallel to BS
     ydif = (poss[1][1][0][1]-poss[1][1][1][1])/2
     if poss[1][1][0][0] > poss[1][1][1][0]:
@@ -130,7 +131,6 @@ if hem == 'RH':
 
 else:
     # angle division between BS and outside locations = polar angle of the BS x and y - BS size) - angle of the BS location (dev from 0) / 2 + 2(dot stimulus size) + 2 (padding)
-        # angle division between BS and outside locations = polar angle of the BS x and y - BS size) - angle of the BS location (dev from 0) / 2 + 2(dot stimulus size) + 2 (padding)
     angup = (cart2pol(spot_righ_cart[0], spot_righ_cart[1] - spot_righ_size[1])[0] - spot_righ[0])/2+ 2 + 2
     # positions
     positions = {
@@ -156,7 +156,6 @@ instructions.wrapWidth = 30
 instructions.draw()
 win.flip()
 event.waitKeys(keyList='space')
-
 
 ## Experimental parameters
 
@@ -186,6 +185,10 @@ def repeat_draw():
     hiFusion.draw()
     loFusion.draw()
 
+repeat_draw()
+blindspot.draw()
+win.flip()
+event.waitKeys(keyList='space')
 
 while not stairs_ongoing == not_ongoing:
     #1. Select the position to draw on
@@ -357,6 +360,7 @@ while not stairs_ongoing == not_ongoing:
                 trial_clock.reset()
             elif k[0] in ['space']:
                 choice = 'Trial aborted'
+                trial_clock.reset()
         ##Adapting the staircase
         resps[position][eye][staircase]  = resps[position][eye][staircase]  + [choice]
     #sets the bounds for the staircase
