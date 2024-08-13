@@ -333,7 +333,7 @@ def doCurvatureTask(ID=None, hem=None, location=None):
     point3 = visual.Circle(win, radius = .7, pos = pol2cart(00, 6), fillColor = 'white', lineColor = None, units = 'deg')
     point4 = visual.Circle(win, radius = .7, pos = pol2cart(00, 6), fillColor = 'white', lineColor = None, units = 'deg')
 
-   '''
+    '''
     # Additional variables 
         
     # distance between dots in the trajectory should be related to the height of the blind spot:
@@ -371,7 +371,7 @@ def doCurvatureTask(ID=None, hem=None, location=None):
         instructions = visual.TextStim(win, text="Throughout the experiment you will fixate a cross located at the centre of the screen. It is important that you maintain fixation on this cross at all times.\n\n In every trial you will be presented with a dot which will move along a curve. You will have to indicate with a keypress if the dot's motion was curved towards fixation or away from fixation  \n \nLeft arrow = motion curved towards fixation.\n \n Right arrow = motion curved away from fixation.\n\n\n You will only be able to respond when the fixation cross rotates from a '+' to a 'x' \n\n\n Press the space bar when you're ready to start the experiment.", color=col_both)
     else:
         instructions = visual.TextStim(win, text="Throughout the experiment you will fixate at a a cross located at the centre of the screen. It is important that you maintain fixation on this cross at all times.\n\n In every trial you will be presented with a dot which will move along a curve. You will have to indicate with a keypress if the dot's motion was curved towards fixation or away from fixation  \n \nLeft arrow = motion curved away from fixation.\n \n Right arrow = motion curved towards fixation.\n\n\nYou will only be able to respond when the fixation cross rotates from a '+' to a 'x' \n\n\n Press the space bar when you're ready to start the experiment.")
-    ''''
+    '''
 
     ## Positions and instructions by hemisphere
     if hem == 'right':
@@ -574,7 +574,8 @@ def doCurvatureTask(ID=None, hem=None, location=None):
                 repeat_draw()
                 print('while start')
                 #drawing the stimuli
-                if any(.1 <= trial_clock.getTime() < .2, .8 <= trial_clock.getTime() < .9:, .9 <= trial_clock.getTime() < 1.0):
+                ## TypeError: any() takes exactly one argument (3 given)
+                if any(.1 <= trial_clock.getTime() < .2, .8 <= trial_clock.getTime() < .9, .9 <= trial_clock.getTime() < 1.0):
                     if len(stim_comments) == 13:
                         tracker.comment(stim_comments.pop()) 
                     repeat_draw()
@@ -598,7 +599,7 @@ def doCurvatureTask(ID=None, hem=None, location=None):
                     hiFusion.draw()
                     loFusion.draw()
                     xfix.draw()
-                ''''
+                '''
                 elif .5 <= trial_clock.getTime() < .6:
                     if len(stim_comments) == 9:
                         tracker.comment(stim_comments.pop()) 
@@ -643,7 +644,7 @@ def doCurvatureTask(ID=None, hem=None, location=None):
                     hiFusion.draw()
                     loFusion.draw()
                     xfix.draw()
-                ''''
+                '''
                 win.flip()
 
 
