@@ -177,7 +177,7 @@ def doCurvatureTask(ID=None, hem=None, location=None):
         spot_righ_cart = eval(bs_param[1])
         spot_righ = cart2pol(spot_righ_cart[0], spot_righ_cart[1])
         spot_righ_size = eval(bs_param[3])
-    
+
         if hem == 'left':
             spot_cart = spot_left_cart
             spot      = spot_left
@@ -333,46 +333,45 @@ def doCurvatureTask(ID=None, hem=None, location=None):
     point3 = visual.Circle(win, radius = .7, pos = pol2cart(00, 6), fillColor = 'white', lineColor = None, units = 'deg')
     point4 = visual.Circle(win, radius = .7, pos = pol2cart(00, 6), fillColor = 'white', lineColor = None, units = 'deg')
 
-    '''
+  
     # Additional variables 
         
     # distance between dots in the trajectory should be related to the height of the blind spot:
-    dot_distance = bs_prop['size'][1] / 3
+    dot_distance = spot_size[1]/ 3
     # stimulus width should be related to dot offset at maximum curvature:
     max_curvature_points = placeCurvatureDots(  B = [0,dot_distance/2],
                                                 C = [0,-dot_distance/2],
                                                 curvature = 0.4)
     stim_width = np.abs(max_curvature_points[0,0]) + 0.7
 
-    arc_length = (bs_prop['size'][1] * 1.0) 
+    arc_length = (spot_size[1] * 1.0) 
 
     # and with a radius that moves away from the blind spot center, toward fixation with enough padding (stim width and 2 dva extra)
-    r = np.sqrt( (abs(bs_prop['cart'][0]) - (bs_prop['size'][0]/2) - 2 - stim_width)**2 + bs_prop['cart'][1]**2 )
+    r = np.sqrt( (abs(spot_cart[0]) - (spot_size[0]/2) - 2 - stim_width)**2 + spot_cart[1]**2 )
 
     C = 2*np.pi*r                 # total circumference
     ang_up = (arc_length/C)*360   # is this correct? (propertion of total circumference * 360)
 
-    # the direction by which the 'above' blind spot position is rotated, depends on hemifield:
-    ang_mod = 1 if hemifield == 'right' else -1
+    # the direction by which the 'above' blind spot position is rotated, depends on hem:
+    ang_mod = 1 if hem == 'right' else -1
 
     # at blind spot middle of trajectory:
-    if hemifield == 'right':
-        bsm_x = bs_prop['cart'][0] - (bs_prop['size'][0]/2) - 2 - stim_width
+    if hem == 'right':
+        bsm_x = spot_cart[0] - (spot_size[0]/2) - 2 - stim_width
+        instructions = visual.TextStim(win, text="Throughout the experiment you will fixate at a a cross located at the centre of the screen. It is important that you maintain fixation on this cross at all times.\n\n In every trial you will be presented with a dot which will move along a curve. You will have to indicate with a keypress if the dot's motion was curved towards fixation or away from fixation  \n \nLeft arrow = motion curved towards fixation.\n \n Right arrow = motion curved away from fixation.\n\n\n You will only be able to respond when the fixation cross rotates from a '+' to a 'x' \n\n\n Press the space bar when you're ready to start the experiment.", color=col_both)
+
     else:
-        bsm_x = bs_prop['cart'][0] + (bs_prop['size'][0]/2) + 2 + stim_width
-    bsm = [bsm_x, bs_prop['cart'][1]]
+        bsm_x = spot_cart[0] + (spot_size[0]/2) + 2 + stim_width
+        instructions = visual.TextStim(win, text="Throughout the experiment you will fixate at a a cross located at the centre of the screen. It is important that you maintain fixation on this cross at all times.\n\n In every trial you will be presented with a dot which will move along a curve. You will have to indicate with a keypress if the dot's motion was curved towards fixation or away from fixation  \n \nLeft arrow = motion curved away from fixation.\n \n Right arrow = motion curved towards fixation.\n\n\nYou will only be able to respond when the fixation cross rotates from a '+' to a 'x' \n\n\n Press the space bar when you're ready to start the experiment.", color = col_both)
+
+    bsm = [bsm_x, spot_cart[1]]
 
     positions = [ [ [sum(x) for x in zip(pol2cart(cart2pol(bsm[0], bsm[1])[0] + (ang_up*ang_mod), r), [0,dot_distance/2 ])],
                 [sum(x) for x in zip(pol2cart(cart2pol(bsm[0], bsm[1])[0] + (ang_up*ang_mod), r), [0,dot_distance/-2])] ],
                 [ [bsm[0], bsm[1]+(dot_distance/2)],
                 [bsm[0], bsm[1]-(dot_distance/2)] ] ]
-
-    if hemifield == 'right':
-        instructions = visual.TextStim(win, text="Throughout the experiment you will fixate a cross located at the centre of the screen. It is important that you maintain fixation on this cross at all times.\n\n In every trial you will be presented with a dot which will move along a curve. You will have to indicate with a keypress if the dot's motion was curved towards fixation or away from fixation  \n \nLeft arrow = motion curved towards fixation.\n \n Right arrow = motion curved away from fixation.\n\n\n You will only be able to respond when the fixation cross rotates from a '+' to a 'x' \n\n\n Press the space bar when you're ready to start the experiment.", color=col_both)
-    else:
-        instructions = visual.TextStim(win, text="Throughout the experiment you will fixate at a a cross located at the centre of the screen. It is important that you maintain fixation on this cross at all times.\n\n In every trial you will be presented with a dot which will move along a curve. You will have to indicate with a keypress if the dot's motion was curved towards fixation or away from fixation  \n \nLeft arrow = motion curved away from fixation.\n \n Right arrow = motion curved towards fixation.\n\n\nYou will only be able to respond when the fixation cross rotates from a '+' to a 'x' \n\n\n Press the space bar when you're ready to start the experiment.")
+    
     '''
-
     ## Positions and instructions by hemisphere
     if hem == 'right':
         # angle division between BS and outside locations = polar angle of the BS x and y + BS size) - angle of the BS location (dev from 0) / 2 + 2(dot stimulus size) + 2 (padding)
@@ -415,7 +414,7 @@ def doCurvatureTask(ID=None, hem=None, location=None):
 
         #Instructions
         instructions = visual.TextStim(win, text="Throughout the experiment you will fixate at a a cross located at the centre of the screen. It is important that you maintain fixation on this cross at all times.\n\n In every trial you will be presented with a dot which will move along a curve. You will have to indicate with a keypress if the dot's motion was curved towards fixation or away from fixation  \n \nLeft arrow = motion curved away from fixation.\n \n Right arrow = motion curved towards fixation.\n\n\nYou will only be able to respond when the fixation cross rotates from a '+' to a 'x' \n\n\n Press the space bar when you're ready to start the experiment.", color = col_both)
-
+  '''
     instructions.wrapWidth = 30
     instructions.draw()
     win.flip()
@@ -503,13 +502,18 @@ def doCurvatureTask(ID=None, hem=None, location=None):
         # 3. Select the staircase to draw (i.e. curvature towards or curvature away)
         staircase = np.random.choice(list(compress([0, 1], stairs_ongoing[position][eye])))
         fixation.color = col_both 
+
         ##position of central dots (fixed, either above or around BS)
+        point2.pos = positions[position][0]
+        point3.pos = positions[position][1]
+        '''
         if position == 0: #above blind spot
             point2.pos = (poss[0][1][0][0]+xdif,poss[0][1][0][1]+ydif)
             point3.pos = (poss[0][1][0][0]-xdif,poss[0][1][0][1]-ydif)
         elif position == 1: #blind spot
             point2.pos = poss[1][1][0]
             point3.pos = poss[1][1][1]
+        '''
         ##position of first and fourth dots (mobile, either curved towards or curved away)
         tstep = step[position][eye][staircase] if step[position][eye][staircase] >0 else step[position][eye][staircase]*-1 #-1 to prevent it from being negative
         currentcurv = direction[position][eye][staircase] * curvature[tstep]
@@ -574,7 +578,10 @@ def doCurvatureTask(ID=None, hem=None, location=None):
                 repeat_draw()
                 print('while start')
                 #drawing the stimuli
+                
+                '''
                 ## TypeError: any() takes exactly one argument (3 given)
+                
                 if any(.1 <= trial_clock.getTime() < .2, .8 <= trial_clock.getTime() < .9, .9 <= trial_clock.getTime() < 1.0):
                     if len(stim_comments) == 13:
                         tracker.comment(stim_comments.pop()) 
@@ -600,6 +607,28 @@ def doCurvatureTask(ID=None, hem=None, location=None):
                     loFusion.draw()
                     xfix.draw()
                 '''
+
+                if .1 <= trial_clock.getTime() < .2:
+                    if len(stim_comments) == 13:
+                        tracker.comment(stim_comments.pop()) 
+                    repeat_draw()
+                    point1.draw()
+                    print('point1')
+                elif .2 <= trial_clock.getTime() < .3:
+                    if len(stim_comments) == 12:
+                        tracker.comment(stim_comments.pop()) 
+                    repeat_draw()
+                    point2.draw()
+                elif .3 <=  trial_clock.getTime() < .4:
+                    if len(stim_comments) == 11:
+                        tracker.comment(stim_comments.pop()) 
+                    repeat_draw()
+                    point3.draw()
+                elif .4 <= trial_clock.getTime() < .5:
+                    if len(stim_comments) == 10:
+                        tracker.comment(stim_comments.pop()) 
+                    repeat_draw()
+                    point4.draw()
                 elif .5 <= trial_clock.getTime() < .6:
                     if len(stim_comments) == 9:
                         tracker.comment(stim_comments.pop()) 
@@ -610,7 +639,7 @@ def doCurvatureTask(ID=None, hem=None, location=None):
                         tracker.comment(stim_comments.pop()) 
                     repeat_draw()
                     point3.draw()
-                elif .7 <= trial_clock.getTime() < .8:
+                elif .7 <= trial_clock.getTime() < .9:
                     if len(stim_comments) == 8:
                         tracker.comment(stim_comments.pop()) 
                     repeat_draw()
@@ -640,11 +669,8 @@ def doCurvatureTask(ID=None, hem=None, location=None):
                         tracker.comment(stim_comments.pop()) 
                     repeat_draw()
                     point4.draw()
-                elif 1.3 <= trial_clock.getTime() < 1.4:
-                    hiFusion.draw()
-                    loFusion.draw()
-                    xfix.draw()
-                '''
+                
+
                 win.flip()
 
 
