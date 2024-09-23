@@ -744,7 +744,9 @@ def doCurvatureTask(ID=None, hem=None, location=None):
                         break
             increment = False
             ##Adapting the staircase 
-            resps[position][eye][staircase]  = resps[position][eye][staircase]  + [choice]
+            if choice in ['left', 'right']:
+                resps[position][eye][staircase] = resps[position][eye][staircase] + [choice]
+
 
         if increment:
         #sets the bounds for the staircase 
